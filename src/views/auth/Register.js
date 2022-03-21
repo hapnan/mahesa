@@ -1,6 +1,32 @@
 import React from "react";
-
+import axios from 'axios';
+import bcrypt from 'bcryptjs'
 export default function Register() {
+  
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  function CreateUsers() {
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    console.log(name)
+      axios
+        .post('http://localhost:4000/users/create-users',{
+          name: name,
+          email: email,
+          password: hashedPassword
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error)
+        });
+        
+      this.setName = '';
+      this.setEmail = '';
+      this.setPassword = '';
+    }
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -43,7 +69,7 @@ export default function Register() {
                 <div className="text-blueGray-400 text-center mb-3 font-bold">
                   <small>Or sign up with credentials</small>
                 </div>
-                <form>
+                <form onSubmit={CreateUsers}>
                   <div className="relative w-full mb-3">
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -52,9 +78,10 @@ export default function Register() {
                       Name
                     </label>
                     <input
-                      type="email"
+                      type="text"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Name"
+                      onChange={event => setName(event.target.value)}
                     />
                   </div>
 
@@ -69,6 +96,7 @@ export default function Register() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      onChange={event => setEmail(event.target.value)}
                     />
                   </div>
 
@@ -83,6 +111,7 @@ export default function Register() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      onChange={event => setPassword(event.target.value)}
                     />
                   </div>
 
@@ -109,7 +138,7 @@ export default function Register() {
                   <div className="text-center mt-6">
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-                      type="button"
+                      type="submit"
                     >
                       Create Account
                     </button>

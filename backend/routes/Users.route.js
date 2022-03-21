@@ -4,7 +4,7 @@ let mongoose = require('mongoose'),
 // Users Model
 let Users = require('../models/Users');
 // CREATE Student
-router.route('/create-student').post((req, res, next) => {
+router.route('/create-users').post((req, res, next) => {
   Users.create(req.body, (error, data) => {
     if (error) {
       return next(error)
@@ -25,7 +25,7 @@ router.route('/').get((req, res) => {
   })
 })
 // Get Single Student
-router.route('/edit-student/:id').get((req, res) => {
+router.route('/edit-users/:id').get((req, res) => {
   Users.findById(req.params.id, (error, data) => {
     if (error) {
       return next(error)
@@ -36,7 +36,7 @@ router.route('/edit-student/:id').get((req, res) => {
 })
 
 // Update Student
-router.route('/update-student/:id').put((req, res, next) => {
+router.route('/update-users/:id').put((req, res, next) => {
   Users.findByIdAndUpdate(req.params.id, {
     $set: req.body
   }, (error, data) => {
@@ -45,12 +45,12 @@ router.route('/update-student/:id').put((req, res, next) => {
       console.log(error)
     } else {
       res.json(data)
-      console.log('Student updated successfully !')
+      console.log('Users updated successfully !')
     }
   })
 })
 // Delete Student
-router.route('/delete-student/:id').delete((req, res, next) => {
+router.route('/delete-users/:id').delete((req, res, next) => {
   Users.findByIdAndRemove(req.params.id, (error, data) => {
     if (error) {
       return next(error);
