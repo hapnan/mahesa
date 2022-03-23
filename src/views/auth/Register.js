@@ -1,15 +1,18 @@
 import React from "react";
 import axios from 'axios';
 import bcrypt from 'bcryptjs'
+
+
+
 export default function Register() {
   
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  var [name, setName] = React.useState('');
+  var [email, setEmail] = React.useState('');
+  var [password, setPassword] = React.useState('');
 
-  function CreateUsers() {
+  function CreateUsers(e) {
+    e.preventDefault();
     const hashedPassword = bcrypt.hashSync(password, 10);
-    console.log(name)
       axios
         .post('http://localhost:4000/users/create-users',{
           name: name,
@@ -17,15 +20,16 @@ export default function Register() {
           password: hashedPassword
         })
         .then((response) => {
-          console.log(response);
+          window.location.href="/auth" ;
+          window.sessionStorage.setItem('data1', response.status)
         })
         .catch((error) => {
-          console.log(error)
+          console.error({error})
         });
         
-      this.setName = '';
-      this.setEmail = '';
-      this.setPassword = '';
+      setName = '';
+      setEmail = '';
+      setPassword = '';
     }
   return (
     <>
@@ -35,6 +39,7 @@ export default function Register() {
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
               <div className="rounded-t mb-0 px-6 py-6">
                 <div className="text-center mb-3">
+                  
                   <h6 className="text-blueGray-500 text-sm font-bold">
                     Sign up with
                   </h6>

@@ -2,24 +2,33 @@ let express = require('express');
 let mongoose = require('mongoose');
 let cors = require('cors');
 let bodyParser = require('body-parser');
+const passport = require("passport");
 // Express Route
 const Users = require('../backend/routes/Users.route')
-// Connecting mongoDB Database
-mongoose
-  .connect('mongodb+srv://test:snaiper123@mahesa.np6v7.mongodb.net/MahesaDB?retryWrites=true&w=majority')
-  .then((x) => {
-    console.log(`Connected to Mongo! Database name: "${x.connections[0].name}"`)
-  })
-  .catch((err) => {
-    console.error('Error connecting to mongo', err.reason)
-  })
+const Product = require('../backend/routes/Product.route')
+
 const app = express();
+
+const db = require('./config/keys').mongoURI;
+// Connect to MongoDB
+mongoose
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
+  .then(() => console.log("MongoDB successfully connected"))
+  .catch(err => console.log(err));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-app.use(cors());
+app.use(passport.initialize());
+// Passport config
+require("./config/passport")(passport);
+// Routes
 app.use('/users', Users)
+app.use('/Product', Product)
 
 // PORT
 const port = process.env.PORT || 4000;
