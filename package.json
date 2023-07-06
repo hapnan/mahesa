@@ -29,7 +29,7 @@
     "react-scripts": "4.0.3",
     "readable-stream": "^3.6.0",
     "redux-thunk": "^2.4.1",
-    "tailwindcss": "2.0.4"
+    "tailwindcss": "2.2.19"
   },
   "scripts": {
     "start": "react-scripts start",
