@@ -8,35 +8,30 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 
 export default function CardTable({ color, data }) {
-  let subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [product, setProduct] = React.useState('');
   const [price, setPrice] = React.useState('');
   const [stock, setStock] = React.useState('');
   const [dataupdate, setDataupdate] = React.useState([]);
-
-
-  const update_table = useEffect(() =>{
-    const getdata = async () => {
-     const {data} = await axios.get('http://localhost:4000/product/getall');
-     setDataupdate(data)
-    };
-    getdata()
-    return () =>{
-      setDataupdate([''])
-    }
-    
-  },[]);
-
+  
   function openModal() {
     setIsOpen(true);
   }
+ 
 
+  useEffect(() => {
+    getdata();
+  },[])
   
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
-  } 
+
+  function getdata() {
+    const data = async () => {
+      await axios.get('http://localhost:4000/product/getall');
+    }
+    setDataupdate(data);
+    console.log(dataupdate);
+
+  }
   
   function closeModal() {
     const date = Date.now();
@@ -56,11 +51,11 @@ export default function CardTable({ color, data }) {
       })
       .then((response) => {
         console.log(response);
-        update_table()
       })
       .catch((error) => {
         console.log(error);
-      })
+      });
+      
     setIsOpen(false);
     
   }
